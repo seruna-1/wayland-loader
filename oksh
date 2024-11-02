@@ -1,0 +1,32 @@
+export XDG_RUNTIME_DIR=/tmp/$(id -u)
+
+if test -d $XDG_RUNTIME_DIR
+then
+
+	echo "XDG_RUNTIME_DIR exists."
+
+else
+
+	echo "XDG_RUNTIME_DIR does not exists. Creating it."
+
+	mkdir $XDG_RUNTIME_DIR
+
+fi
+
+chmod 0700 $XDG_RUNTIME_DIR
+
+if test ${WAYLAND_DISPLAY}
+then
+
+	echo "Variable [WAYLAND_DISPLAY] exists. Graphical session active."
+
+else
+
+    echo "No graphical session. Starting sway in 3 seconds."
+
+	sleep 3
+
+    dbus-run-session sway
+
+fi
+
